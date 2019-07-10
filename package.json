@@ -1,0 +1,69 @@
+{
+  "name": "hlx-lib",
+  "version": "0.0.1",
+  "description": "A library for processing HLS streams",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "xo",
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "test": "npm run lint && npm audit --audit-level high && ava --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hlxjs/hlx-lib.git"
+  },
+  "keywords": [
+    "video",
+    "HLS",
+    "stream",
+    "media"
+  ],
+  "author": "Kuu Miyazaki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hlxjs/hlx-lib/issues"
+  },
+  "homepage": "https://github.com/hlxjs/hlx-lib#readme",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "xo": {
+    "esnext": true,
+    "space": true,
+    "rules": {
+      "capitalized-comments": 0,
+      "dot-notation": 0,
+      "indent": 0,
+      "new-cap": 0,
+      "no-cond-assign": 0,
+      "no-multi-assign": 0,
+      "padding-line-between-statements": 0,
+      "promise/prefer-await-to-then": 0,
+      "import/no-dynamic-require": 0,
+      "unicorn/catch-error-name": 0,
+      "unicorn/filename-case": 0
+    }
+  },
+  "ava": {
+    "helpers": [
+      "test/helper/**/*",
+      "test/fixture/**/*"
+    ]
+  },
+  "dependencies": {
+    "hlx-file-reader": "0.0.4",
+    "hlx-file-writer": "0.0.4",
+    "hlx-terminator": "0.0.1",
+    "hlx-url-rewriter": "0.0.1"
+  },
+  "devDependencies": {
+    "ava": "^2.1.0",
+    "coveralls": "^3.0.4",
+    "hls-parser": "^0.4.1",
+    "nyc": "^14.1.1",
+    "xo": "^0.24.0"
+  }
+}
