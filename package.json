@@ -54,7 +54,7 @@
     ]
   },
   "dependencies": {
-    "hlx-file-reader": "0.0.6",
+    "hlx-file-reader": "0.0.7",
     "hlx-file-writer": "0.0.4",
     "hlx-terminator": "0.0.1",
     "hlx-url-rewriter": "0.0.3"
