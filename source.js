@@ -3,7 +3,7 @@ const {createReadStream} = require('hlx-file-reader');
 const {createUrlRewriter} = require('hlx-url-rewriter');
 
 function createSource(location, options = {}) {
-  const urlRewriter = createUrlRewriter();
+  const urlRewriter = createUrlRewriter(options);
   let head;
   if (location instanceof Readable) {
     head = location;

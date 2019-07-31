@@ -1,0 +1,10 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-TARGETDURATION:10
+#EXTINF:9.009,
+/segments/low/first.ts
+#EXTINF:9.009,
+/segments/low/second.ts
+#EXTINF:3.003,
+/segments/low/third.ts
+#EXT-X-ENDLIST
