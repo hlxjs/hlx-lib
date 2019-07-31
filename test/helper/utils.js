@@ -1,20 +1,13 @@
 const fs = require('fs');
 const path = require('path');
+const {URL} = require('url');
 const HLS = require('hls-parser');
+const {mkdirP, tryCatch} = require('hlx-util');
 
 const FIXTUREDIR = path.join(__dirname, '../fixture');
 const TMPDIR = process.env.TMPDIR || `${FIXTUREDIR}/tmp`;
 
-const FILELIST = [
-  'master.m3u8',
-  'low/first.ts',
-  'low/second.ts',
-  'low/third.ts'
-];
-
-if (!fs.existsSync(TMPDIR) || !fs.lstatSync(TMPDIR).isDirectory()) {
-  fs.mkdirSync(TMPDIR);
-}
+mkdirP(TMPDIR);
 
 function removeSpaceFromLine(line) {
   let inside = false;
@@ -88,13 +81,38 @@ function compareDirectories(prefix) {
 
 function pushAllFiles(prefix, stream) {
   const SRCDIR = `${FIXTUREDIR}/${prefix}`;
+  const FILELIST = [
+    'master.m3u8',
+    'playlists/low.m3u8',
+    'playlists/mid.m3u8',
+    'playlists/high.m3u8',
+    'segments/low/first.ts',
+    'segments/low/second.ts',
+    'segments/low/third.ts',
+    'segments/mid/first.ts',
+    'segments/mid/second.ts',
+    'segments/mid/third.ts',
+    'segments/high/first.ts',
+    'segments/high/second.ts',
+    'segments/high/third.ts'
+  ];
   for (const [index, filename] of FILELIST.entries()) {
     let data;
     if (filename.endsWith('.m3u8')) {
       data = HLS.parse(fs.readFileSync(`${SRCDIR}/${filename}`, 'utf8'));
-      data.uri = filename;
+      if (data.isMasterPlaylist) {
+        data.uri = `file://${SRCDIR}/${filename}`;
+        data.parentUri = '';
+      } else {
+        data.uri = `file://${SRCDIR}/${filename}`;
+        data.parentUri = `file://${SRCDIR}/${FILELIST[0]}`;
+        for (const segment of data.segments) {
+          segment.parentUri = `file://${SRCDIR}/${filename}`;
+        }
+      }
     } else {
-      data = new HLS.types.Segment({uri: filename, mediaSequenceNumber: index, discontinuitySequence: 0});
+      data = new HLS.types.Segment({uri: `/${filename}`, mediaSequenceNumber: (index - 4) % 3, discontinuitySequence: 0});
+      data.parentUri = `file://${SRCDIR}/${FILELIST[Math.floor((index - 4) / 3) + 1]}`;
       data.data = fs.readFileSync(`${SRCDIR}/${filename}`);
     }
     stream.push(data);
@@ -102,17 +120,33 @@ function pushAllFiles(prefix, stream) {
   stream.push(null);
 }
 
-function writeObj(prefix, obj) {
+function writeObj(prefix, obj, inputDir) {
   const DESTDIR = `${TMPDIR}/${prefix}`;
-  let {uri} = obj;
-  if (path.isAbsolute(uri) && fs.existsSync(uri)) {
-    uri = path.basename(uri);
+  const {uri, parentUri} = obj;
+  // console.log(`writeObj: uri=${uri}, parentUri=${parentUri}, inputDir=${inputDir}, outputDir=${DESTDIR}`);
+  let destPath;
+  if (path.isAbsolute(uri)) {
+    destPath = path.join(DESTDIR, uri);
+  } else {
+    const obj = tryCatch(
+      () => new URL(uri),
+      () => new URL(uri, parentUri),
+      () => null
+    );
+    if (obj) {
+      const pathname = path.relative(inputDir, obj.pathname);
+      destPath = path.join(DESTDIR, pathname);
+    } else {
+      const pathname = path.relative(inputDir, path.join(parentUri, uri));
+      destPath = path.join(DESTDIR, pathname);
+    }
   }
-  const destPath = path.join(DESTDIR, uri);
+
+  // console.log(`\tdestPath=${destPath}`);
+
   const dir = path.dirname(destPath);
-  if (!fs.existsSync(dir) || !fs.lstatSync(dir).isDirectory()) {
-    fs.mkdirSync(dir);
-  }
+  mkdirP(dir);
+
   if (obj.type === 'playlist') {
     return new Promise((resolve, reject) => {
       fs.writeFile(destPath, HLS.stringify(obj), 'utf8', err => {

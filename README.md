@@ -53,7 +53,7 @@ const {createReadStream} = require('hlx-dest-http-server');
 const writer = createWriteStream({
   port: 8080,
   prefix: 'media',
-  rootPath: '/var/www/media/'
+  outputDir: '/var/www/media/'
 });
 
 // Host the stream at http://localhost:8080/media/sample.m3u8
@@ -76,13 +76,19 @@ Creates a new `stream.Readable` object.
 An instance of `stream.Readable`.
 When the `location` is a local file path or a url, the `hlx-file-reader` stream will be created. Otherwise, the passed readable stream will be returned back.
 
-### `dest(location)`
+### `dest(location[, options])`
 Creates a new `stream.Writable` object.
 
 #### params
 | Name    | Type   | Required | Default | Description   |
 | ------- | ------ | -------- | ------- | ------------- |
-| location     | string or stream.Writable | Np      | null     | It should be either of a local file path or a custom destination object.  |
+| location     | string or stream.Writable | No      | null     | It should be either of a local file path or a custom destination object.  |
+| options     | object | No      | {}     | See below  |
+
+#### options
+| Name        | Type   | Default | Description                       |
+| ----------- | ------ | ------- | --------------------------------- |
+| inputDir | string | / | The root directory from which all the files are read (This option is only used in case of file urls) |
 
 #### return value
 When the `location` is a local file path, the `hlx-file-writer` stream will be created. Otherwise, the passed writable stream will be returned back.
