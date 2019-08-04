@@ -2,9 +2,9 @@
 #EXT-X-VERSION:3
 #EXT-X-TARGETDURATION:10
 #EXTINF:9.009,
-/segments/mid/first.ts
+../segments/mid/first.ts
 #EXTINF:9.009,
-/segments/mid/second.ts
+../segments/mid/second.ts
 #EXTINF:3.003,
-/segments/mid/third.ts
+../segments/mid/third.ts
 #EXT-X-ENDLIST
