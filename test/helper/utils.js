@@ -16,7 +16,7 @@ function removeSpaceFromLine(line) {
     const ch = line[i];
     if (ch === '"') {
       inside = !inside;
-    } else if (!inside && ch === ' ') {
+    } else if (!inside && /\s/.test(ch)) {
       continue;
     }
     str += ch;
@@ -33,7 +33,7 @@ function strip(playlist) {
       if (line.startsWith('#EXT')) {
         filtered.push(line);
       }
-    } else {
+    } else if (line) {
       filtered.push(line);
     }
   });
@@ -104,14 +104,14 @@ function pushAllFiles(prefix, stream) {
         data.uri = `file://${SRCDIR}/${filename}`;
         data.parentUri = '';
       } else {
-        data.uri = `file://${SRCDIR}/${filename}`;
+        data.uri = filename;
         data.parentUri = `file://${SRCDIR}/${FILELIST[0]}`;
         for (const segment of data.segments) {
           segment.parentUri = `file://${SRCDIR}/${filename}`;
         }
       }
     } else {
-      data = new HLS.types.Segment({uri: `/${filename}`, mediaSequenceNumber: (index - 4) % 3, discontinuitySequence: 0});
+      data = new HLS.types.Segment({uri: `../${filename}`, mediaSequenceNumber: (index - 4) % 3, discontinuitySequence: 0});
       data.parentUri = `file://${SRCDIR}/${FILELIST[Math.floor((index - 4) / 3) + 1]}`;
       data.data = fs.readFileSync(`${SRCDIR}/${filename}`);
     }
