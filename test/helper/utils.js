@@ -134,11 +134,9 @@ function writeObj(prefix, obj, inputDir) {
       () => null
     );
     if (obj) {
-      const pathname = path.relative(inputDir, obj.pathname);
-      destPath = path.join(DESTDIR, pathname);
+      destPath = path.join(DESTDIR, path.relative(inputDir, obj.pathname));
     } else {
-      const pathname = path.relative(inputDir, path.join(parentUri, uri));
-      destPath = path.join(DESTDIR, pathname);
+      destPath = path.join(DESTDIR, parentUri ? path.join(path.dirname(parentUri), uri) : uri);
     }
   }
 
