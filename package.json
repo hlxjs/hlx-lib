@@ -54,17 +54,17 @@
     ]
   },
   "dependencies": {
-    "hlx-file-reader": "0.0.10",
-    "hlx-file-writer": "0.0.14",
-    "hlx-terminator": "0.0.3",
-    "hlx-url-rewriter": "0.0.22"
+    "hlx-file-reader": "0.0.11",
+    "hlx-file-writer": "0.0.15",
+    "hlx-terminator": "0.0.4",
+    "hlx-url-rewriter": "0.0.23"
   },
   "devDependencies": {
     "ava": "^2.4.0",
     "coveralls": "^3.0.6",
     "hls-parser": "^0.4.5",
-    "hlx-logger": "0.0.6",
-    "hlx-util": "0.0.8",
+    "hlx-logger": "0.0.7",
+    "hlx-util": "0.0.9",
     "nyc": "^14.1.1",
     "xo": "^0.25.3"
   }
