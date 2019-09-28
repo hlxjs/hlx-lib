@@ -12,8 +12,7 @@ mkdirP(TMPDIR);
 function removeSpaceFromLine(line) {
   let inside = false;
   let str = '';
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i];
+  for (const ch of line) {
     if (ch === '"') {
       inside = !inside;
     } else if (!inside && /\s/.test(ch)) {

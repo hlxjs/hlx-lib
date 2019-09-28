@@ -55,17 +55,17 @@
   },
   "dependencies": {
     "hlx-file-reader": "0.0.10",
-    "hlx-file-writer": "0.0.13",
+    "hlx-file-writer": "0.0.14",
     "hlx-terminator": "0.0.3",
-    "hlx-url-rewriter": "0.0.21"
+    "hlx-url-rewriter": "0.0.22"
   },
   "devDependencies": {
     "ava": "^2.4.0",
     "coveralls": "^3.0.6",
     "hls-parser": "^0.4.5",
-    "hlx-logger": "0.0.5",
-    "hlx-util": "0.0.7",
+    "hlx-logger": "0.0.6",
+    "hlx-util": "0.0.8",
     "nyc": "^14.1.1",
-    "xo": "^0.24.0"
+    "xo": "^0.25.3"
   }
 }
