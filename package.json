@@ -57,7 +57,7 @@
     "hlx-file-reader": "0.0.12",
     "hlx-file-writer": "0.0.16",
     "hlx-terminator": "0.0.5",
-    "hlx-url-rewriter": "0.0.24"
+    "hlx-url-rewriter": "0.0.25"
   },
   "devDependencies": {
     "ava": "^2.4.0",
