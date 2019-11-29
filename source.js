@@ -8,7 +8,8 @@ function createSource(location, options = {}) {
   if (location instanceof Readable) {
     head = location;
   } else {
-    head = createReadStream(location, Object.assign(options, {rawResponse: true}));
+    const defaultOpts = {rawResponse: true};
+    head = createReadStream(location, Object.assign(defaultOpts, options));
   }
   return head.pipe(urlRewriter);
 }
