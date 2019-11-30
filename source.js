@@ -11,6 +11,9 @@ function createSource(location, options = {}) {
     const defaultOpts = {rawResponse: true};
     head = createReadStream(location, Object.assign(defaultOpts, options));
   }
+  if (options.noUriConversion) {
+    return head;
+  }
   return head.pipe(urlRewriter);
 }
 
