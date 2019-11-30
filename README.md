@@ -63,14 +63,21 @@ hlx.src('https://foo.bar/sample.m3u8')
 ```
 ## API
 
-### `src(location)`
+### `src(location[, options])`
 Creates a new `stream.Readable` object.
 
 #### params
 | Name    | Type   | Required | Default | Description   |
 | ------- | ------ | -------- | ------- | ------------- |
-| location     | string or stream.Readable | Yes      | N/A     | It should be either of a local file path, a url of the playlist, or a custom source object.  |
+| location     | string or stream.Readable | Yes      | N/A     | It should be either of a local file path, a url of the playlist, or a custom source object (`stream.Readable`)  |
+| options     | object | No      | {}     | See below  |
 
+#### options
+| Name        | Type   | Default | Description                       |
+| ----------- | ------ | ------- | --------------------------------- |
+| noUriConversion | boolean | false | Passing `true` will prevent any URI conversions done internally. The default behavior is to convert all URIs into paths relative to the master playlist |
+
+You can also pass the options for [`hlx-file-reader`'s `createReadStream`](https://github.com/hlxjs/hlx-file-reader#options) and [`hlx-url-rewriter`'s '`createUrlRewriter`](https://github.com/hlxjs/hlx-url-rewriter#options), which will be relayed to those modules internally.
 
 #### return value
 An instance of `stream.Readable`.
@@ -82,13 +89,13 @@ Creates a new `stream.Writable` object.
 #### params
 | Name    | Type   | Required | Default | Description   |
 | ------- | ------ | -------- | ------- | ------------- |
-| location     | string or stream.Writable | No      | null     | It should be either of a local file path or a custom destination object.  |
+| location     | string or stream.Writable | No      | null     | It should be either of a local file path or a custom destination object (`stream.Writable`)  |
 | options     | object | No      | {}     | See below  |
 
 #### options
 | Name        | Type   | Default | Description                       |
 | ----------- | ------ | ------- | --------------------------------- |
-| inputDir | string | / | The root directory from which all the files are read (This option is only used in case of file urls) |
+| inputDir | string | / | The root directory from which all the files are read (This option is only used in case of file: urls) |
 
 #### return value
 When the `location` is a local file path, the `hlx-file-writer` stream will be created. Otherwise, the passed writable stream will be returned back.
